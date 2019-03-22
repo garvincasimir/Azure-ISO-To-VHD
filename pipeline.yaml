@@ -1,0 +1,89 @@
+resources:
+- repo: self
+
+jobs:
+
+- job: Job_1
+  displayName: Setup
+  condition: succeeded()
+  pool:
+    name: Hosted Ubuntu 1604
+#Your build pipeline references a secret variable named ‘vm-password’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+  variables:
+    resource-group: 'vm-pack-rg'
+    region: 'eastus'
+    vm-name: 'pack-vm'
+
+  steps:
+  - task: AzureCLI@1
+    displayName: 'Deploy Builder VM to Azure'
+    inputs:
+      azureSubscription: '[Insert Subscription Here]'
+      scriptPath: 'create-inception.sh'
+      arguments: '$(resource-group) $(region) $(vm-name) $(vm-password)'
+
+
+- job: Job_2
+  displayName: Build 
+  dependsOn: Job_1
+  condition: succeeded()
+  pool:
+    name: Hosted Ubuntu 1604
+  variables:
+    resource-group: 'vm-pack-rg'
+    vm-name: 'pack-vm'
+
+  steps:
+  - task: AzureCLI@1
+    displayName: 'Run Packer Build on Builder VM'
+    inputs:
+      azureSubscription: '[Insert Subscription Here]'
+      scriptPath: 'run-packer-build.sh'
+      arguments: '$(resource-group) $(vm-name)'
+
+
+- job: Job_3
+  displayName: Upload
+  dependsOn: Job_2
+  condition: succeeded()
+  pool:
+    name: Hosted Ubuntu 1604
+  variables:
+    resource-group: 'vm-pack-rg'
+    vm-name: 'pack-vm'
+    storage-account-name: 'vmpack'
+    storage-container-name: 'vhd'
+    base-image-name: 'baked-centos7'
+
+  steps:
+  - task: AzureCLI@1
+    displayName: 'Run Upload VHD'
+    inputs:
+      azureSubscription: '[Insert Subscription Here]'
+      scriptPath: 'run-upload-vhd.sh'
+      arguments: '$(resource-group) $(vm-name) $(storage-account-name) $(storage-container-name) $(base-image-name) $(Build.BuildId)'
+
+
+- job: Job_4
+  displayName: Test Create VM From VHD
+  dependsOn: Job_3
+  condition: succeeded()
+  pool:
+    name: Hosted Ubuntu 1604
+#Your build pipeline references an undefined variable named ‘Region’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references a secret variable named ‘vm-password’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+  variables:
+    resource-group: 'vm-pack-rg'
+    vm-name: 'pack-vm'
+    storage-account-name: 'vmpack'
+    storage-container-name: 'vhd'
+    base-image-name: 'baked-centos7'
+
+  steps:
+  - task: AzureCLI@1
+    displayName: 'Create Test VM'
+    inputs:
+      azureSubscription: '[Insert Subscription Here]'
+      scriptPath: 'create-test-vm.sh'
+      arguments: '$(resource-group) $(vm-name) $(storage-account-name) $(storage-container-name) $(base-image-name) $(Region) $(Build.BuildId) $(vm-password)'
+

@@ -1,0 +1,63 @@
+#cloud-config
+# Do not reference this file directly
+# gen-init.sh will use this file as a template for cloud-init-gen.yaml
+# All tokens in the format _(path/filename) will be replaced with the base64 representation
+# of that file
+# Helps to keep things clean
+package_upgrade: true
+packages:
+  - qemu-kvm
+  - qemu 
+  - virt-manager 
+  - libvirt-bin
+  - unzip
+  - xfce4
+  - xrdp
+write_files:
+  - encoding: b64
+    owner: root:root
+    path: /root/install-packer.sh
+    permissions: '0754'
+    content: _(packer/install-packer.sh)
+  - encoding: b64
+    owner: root:root
+    path: /root/config/template.json
+    permissions: '0644'
+    content: _(packer/template.json)
+  - encoding: b64
+    owner: root:root
+    path: /root/config/centos7.6-ks.cfg
+    permissions: '0644'
+    content: _(packer/centos7.6-ks.cfg) 
+  - encoding: b64
+    owner: root:root
+    path: /root/install-azcopy.sh
+    permissions: '0754'
+    content: _(install-azcopy.sh)  
+  - encoding: b64
+    owner: root:root
+    path: /root/packer-build.sh
+    permissions: '0754'
+    content: _(packer/packer-build.sh)   
+  - encoding: b64
+    owner: root:root
+    path: /root/upload-vhd.sh
+    permissions: '0754'
+    content: _(packer/upload-vhd.sh) 
+  - encoding: b64
+    owner: root:root
+    path: /root/bake-azure.sh
+    permissions: '0754'
+    content: _(packer/bake-azure.sh)
+  - encoding: b64
+    owner: root:root
+    path: /root/deprovision.sh
+    permissions: '0754'
+    content: _(packer/deprovision.sh)                 
+runcmd:
+ - "systemctl enable xrdp"
+ - "echo xfce4-session >~/.xsession"
+ - "service xrdp restart"
+ - "cd /root" 
+ - "/root/install-azcopy.sh" 
+ - "/root/install-packer.sh" 
