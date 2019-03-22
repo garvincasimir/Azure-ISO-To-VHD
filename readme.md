@@ -73,4 +73,4 @@ If your image isn't being built for some reason I recommend using remote desktop
 * Install [Real VNC Viewer](https://www.realvnc.com/en/connect/download/viewer/) if the pre-installed viewer does not work correctly.
 
 **Summary**
-If everything goes right you should have a virtual machine based on the custom VHD generated in your pipeline. When you are happy with the results, create an Azure CLI task responsible for deleting the resource group. This repository contains an exported *pipeline.yaml* and all the scripts and config files mentioned above. Please add messing variables and change values to match your environment.
+If everything goes right you should have a virtual machine based on the custom VHD generated in your pipeline. When you are happy with the results, create an Azure CLI task responsible for deleting the resource group. This repository contains an exported *pipeline.yaml* and all the scripts and config files mentioned above. Please add missing variables and change values to match your environment.
