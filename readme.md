@@ -1,4 +1,4 @@
-Have you ever had to manually install an operating system from scratch to create base images for use in the cloud? Are you required to periodically rebuild these base images because of patches and updates? Are you working on a packer plugin? This repository introduces an end to end DevOps pipeline for creating base images from OS install disks in ISO format. 
+Have you ever had to manually install an operating system from scratch to create base images for use in the cloud? Are you required to periodically rebuild these base images because of patches and updates? Are you working on a packer plugin? This repository introduces an end to end DevOps pipeline for creating base images from OS install disks in ISO format. Before jumping into this, please check out the [Azure Image Builder](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/image-builder-overview). It may be a better fit if you have a Redhat subscription or you intend to extend existing Azure Base images. It handles a lot of the complexity involved in the process I am about to describe in this document.
 
 **How will this work?**
 
