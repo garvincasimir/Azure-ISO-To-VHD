@@ -2,7 +2,7 @@ Have you ever had to manually install an operating system from scratch to create
 
 **How will this work?**
 
-This process relies on the [nested virtualization](https://azure.microsoft.com/en-us/blog/nested-virtualization-in-azure/) feature available in Azure. First, A builder VM capable of running nested VMs will be created. Then within the builder VM, packer will be used to create the base images. Once the image creation process is complete, images are copied from the builder VM to Azure storage. From there, these images can be used to create VMs or used as source images in a separate pipeline based on the packer [Azure Builder](https://www.packer.io/docs/builders/azure.html). 
+This process relies on the [nested virtualization](https://azure.microsoft.com/en-us/blog/nested-virtualization-in-azure/) feature available in Azure. First, a builder VM capable of running nested VMs will be created. Then within the builder VM, packer will be used to create the base images. Once the image creation process is complete, images are copied from the builder VM to Azure storage. From there, these images can be used to create VMs or used as source images in a separate pipeline based on the packer [Azure Builder](https://www.packer.io/docs/builders/azure.html). 
 
 ![ISO to VHD in Azure](https://thepracticaldev.s3.amazonaws.com/i/m0n2aipl0oh0n8pa7wms.png)
 
