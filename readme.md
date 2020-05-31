@@ -21,7 +21,7 @@ There are a few different tools required to fully automate this process. If you 
 
 **The Repository**
 
-The source code repository for this workflow will contain a set of bash scripts and the config files required for configuring the builder and nested VMs. The *.github/workflows/build-hd.yaml* contains the workflow required to run all the scripts provided in the repository.
+The source code repository for this workflow will contain a set of bash scripts and the config files required for configuring the builder and nested VMs. The *.github/workflows/main.yaml* contains the workflow required to run all the scripts provided in the repository.
 
 **The Builder VM**
 
@@ -49,6 +49,8 @@ Please complete the following  steps:
   * *VM_PASSWORD* will be used as the password for all VMs created in this workflow
 
   * *VM_USERNAME* will be used as the username for all VMs created in this workflow
+
+  * *SUBSCRIPTION_ID* is not used directly in the workflow but having it saved as a secret will cause it to be redacted in the logs. 
 
 ![Github Secrets](images/github-actions-secrets.png) 
 
