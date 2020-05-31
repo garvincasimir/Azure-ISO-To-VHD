@@ -24,6 +24,7 @@ SAS_TOKEN=$(az storage blob generate-sas \
 
 IMAGE_URL=$(az storage blob url \
                     --container-name $CONTAINER \
+                    --auth-mode login \
                     --name $IMAGE_NAME \
                     --account-name $STORAGE_ACCOUNT )                    
 
