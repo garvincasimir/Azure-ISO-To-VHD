@@ -9,5 +9,4 @@ cd /root/config
 azcopy cp \
     baked.vhd \
     "$IMAGE_URL?$SAS_TOKEN" \
-    --blob-type page \
-    --overwrite 
+    --blob-type page 
