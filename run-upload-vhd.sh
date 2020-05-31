@@ -12,19 +12,20 @@ IMAGE_NAME="$BASE_IMAGE_NAME-$BUILD_ID.vhd"
 #Maybe stick to one platform instead of swallowing errors
 expiration=$(date -ud "2 hours" '+%Y-%m-%dT%TZ' 2> /dev/null) || expiration=$(date -uv +2H '+%Y-%m-%dT%TZ' ) #GNU vs #BSD
 
+#https://docs.microsoft.com/en-us/azure/storage/common/authorize-data-operations-cli
 #Get a sas token
 SAS_TOKEN=$(az storage blob generate-sas \
     --account-name $STORAGE_ACCOUNT \
     --container-name $CONTAINER \
     --name $IMAGE_NAME \
-    --auth-mode login \
+    --auth-mode key \
     --permissions cw \
     --expiry $expiration \
     -o tsv)
 
 IMAGE_URL=$(az storage blob url \
                     --container-name $CONTAINER \
-                    --auth-mode login \
+                    --auth-mode key \
                     --name $IMAGE_NAME \
                     --account-name $STORAGE_ACCOUNT )                    
 
