@@ -42,5 +42,5 @@ az vm run-command invoke \
 -g $RESOURCE_GROUP \
 -n $VM_NAME \
 --command-id RunShellScript \
---scripts "/root/upload-vhd.sh $IMAGE_URL '?$SAS_TOKEN'" 
+--scripts "/root/upload-vhd.sh $IMAGE_URL '$SAS_TOKEN'" 
 
