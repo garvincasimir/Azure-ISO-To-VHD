@@ -13,9 +13,17 @@ VM_SIZE=${10}
 IMAGE_NAME="$BASE_IMAGE_NAME-$BUILD_ID.vhd"
 MANAGED_IMAGE_NAME="$BASE_IMAGE_NAME-$BUILD_ID"
 
+#https://docs.microsoft.com/en-us/azure/storage/common/authorize-data-operations-cli
+KEY=$(az storage account keys list \
+    -n $STORAGE_ACCOUNT \
+    --query [0].value \
+    -o tsv)
+
 IMAGE_URL=$(az storage blob url \
                     --container-name $CONTAINER \
                     --name $IMAGE_NAME \
+                    --auth-mode key \
+                    --account-key $KEY \
                     --account-name $STORAGE_ACCOUNT -o tsv)    
 
 az image create \
