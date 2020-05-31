@@ -25,7 +25,7 @@ SAS_TOKEN=$(az storage blob generate-sas \
     --name $IMAGE_NAME \
     --auth-mode key \
     --account-key $KEY \
-    --permissions cw \
+    --permissions cwd \
     --expiry $expiration \
     -o tsv)
 
