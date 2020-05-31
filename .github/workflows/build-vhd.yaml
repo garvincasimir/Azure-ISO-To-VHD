@@ -1,0 +1,73 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+env:
+  STORAGE_ACCOUNT_NAME: ${{ secrets.STORAGE_ACCOUNT_NAME }}
+  STORAGE_CONTAINER_NAME: vhd
+  BASE_IMAGE_NAME: baked-centos-7
+  REGION: westus
+  RESOURCE_GROUP: vm-build
+  VM_USERNAME: ${{ secrets.VM_USERNAME }}
+  VM_PASSWORD: ${{ secrets.VM_PASSWORD }}
+jobs:
+  vmbuild:
+    runs-on: ubuntu-latest
+    env:
+      BUILDER_VM_NAME: vm-packer 
+      BUILDER_VM_SIZE: Standard_D4s_v3
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: List Files
+      run: ls -l
+    - name: Deploy Builder VM
+      run: |
+        create-inception.sh "$RESOURCE_GROUP" \
+                            "$REGION" \
+                            "$BUILDER_VM_NAME" \
+                            "$VM_USERNAME" \
+                            "$VM_PASSWORD" \
+                            "$BUILDER_VM_SIZE"
+
+    - name: Packer build VHD
+      run: |
+        run-packer-build.sh "$RESOURCE_GROUP" \
+                            "$BUILDER_VM_NAME" 
+                            
+    - name: VHD Upload
+      run: |
+        run-upload-vhd.sh "$RESOURCE_GROUP" \
+                          "$BUILDER_VM_NAME" \
+                          "$STORAGE_ACCOUNT_NAME" \
+                          "$STORAGE_CONTAINER_NAME" \
+                          "$BASE_IMAGE_NAME" \
+                          "$GITHUB_RUN_ID"
+                                                       
+  testvhd:
+    runs-on: ubuntu-latest
+    needs: vmbuild
+    env:
+      TEST_VM_NAME: test-vm
+      TEST_VM_SIZE: Standard_D2s_v3
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Test Deploy VM using VHD
+      run: |
+        create-test-vm.sh "$RESOURCE_GROUP" \
+                          "$TEST_VM_NAME" \
+                          "$STORAGE_ACCOUNT_NAME" \
+                          "$STORAGE_CONTAINER_NAME" \
+                          "$BASE_IMAGE_NAME" \
+                          "$REGION" \
+                          "$GITHUB_RUN_ID" \
+                          "$VM_USERNAME" \
+                          "$VM_PASSWORD" \
+                          "$TEST_VM_SIZE"
+
+                          
