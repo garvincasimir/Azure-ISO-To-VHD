@@ -10,3 +10,8 @@ azcopy cp \
     baked.vhd \
     "$IMAGE_URL?$SAS_TOKEN" \
     --blob-type PageBlob 
+
+#show azcopy logs for more detail errors. SAS redacted automatically.
+#might need to get more advanced and query json output.
+#Script should return non zero error code
+cat ~/.azcopy/*.log
