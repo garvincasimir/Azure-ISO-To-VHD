@@ -10,6 +10,7 @@ env:
   RESOURCE_GROUP: vm-build
   VM_USERNAME: ${{ secrets.VM_USERNAME }}
   VM_PASSWORD: ${{ secrets.VM_PASSWORD }}
+  SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
 jobs:
   vmbuild:
     runs-on: ubuntu-latest
