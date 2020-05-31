@@ -14,4 +14,4 @@ azcopy cp \
 #show azcopy logs for more detail errors. SAS redacted automatically.
 #might need to get more advanced and query json output.
 #Script should return non zero error code
-cat ~/.azcopy/*.log
+cat .azcopy/*.log
