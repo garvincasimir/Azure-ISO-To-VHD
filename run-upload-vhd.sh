@@ -26,7 +26,6 @@ IMAGE_URL=$(az storage blob url \
                     --name $IMAGE_NAME \
                     --account-name $STORAGE_ACCOUNT )                    
 
- echo "Uploading blob $IMAGE_URL"
 
 #run upload vhd script on builer vm
 az vm run-command invoke \
