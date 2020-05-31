@@ -13,9 +13,9 @@ IMAGE_NAME="$BASE_IMAGE_NAME-$BUILD_ID.vhd"
 expiration=$(date -ud "2 hours" '+%Y-%m-%dT%TZ' 2> /dev/null) || expiration=$(date -uv +2H '+%Y-%m-%dT%TZ' ) #GNU vs #BSD
 
 #https://docs.microsoft.com/en-us/azure/storage/common/authorize-data-operations-cli
-KEY=$(az storage account keys list 
-    -n $STORAGE_ACCOUNT 
-    --query [0].value
+KEY=$(az storage account keys list \
+    -n $STORAGE_ACCOUNT \
+    --query [0].value \
     -o tsv)
 
 #Get a sas token
