@@ -3,7 +3,9 @@
 RESOURCE_GROUP=$1
 REGION=$2
 VM_NAME=$3
-VM_PASSWORD=$4
+VM_USERNAME=$4
+VM_PASSWORD=$5
+VM_SIZE=$6
 
 #Create resource group if not exists
 VM_EXISTS=$(az group exists -g $RESOURCE_GROUP)
@@ -27,9 +29,9 @@ az vm create \
     --resource-group $RESOURCE_GROUP \
     --name $VM_NAME \
     --image UbuntuLTS \
-    --admin-username azureuser \
+    --admin-username $VM_USERNAME \
     --admin-password $VM_PASSWORD \
-    --size Standard_D4s_v3 \
+    --size $VM_SIZE \
     --custom-data cloud-init-gen.yaml
 
 echo "Inception vm $VM_NAME created. Waiting for cloud init."
