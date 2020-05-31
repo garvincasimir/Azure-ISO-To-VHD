@@ -21,9 +21,11 @@ jobs:
     - uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Show all files
+      run: ls -l
     - name: Deploy Builder VM
       run: |
-        create-inception.sh "$RESOURCE_GROUP" \
+        ./create-inception.sh "$RESOURCE_GROUP" \
                             "$REGION" \
                             "$BUILDER_VM_NAME" \
                             "$VM_USERNAME" \
@@ -32,12 +34,12 @@ jobs:
 
     - name: Packer build VHD
       run: |
-        run-packer-build.sh "$RESOURCE_GROUP" \
+        ./run-packer-build.sh "$RESOURCE_GROUP" \
                             "$BUILDER_VM_NAME" 
                             
     - name: VHD Upload
       run: |
-        run-upload-vhd.sh "$RESOURCE_GROUP" \
+        ./run-upload-vhd.sh "$RESOURCE_GROUP" \
                           "$BUILDER_VM_NAME" \
                           "$STORAGE_ACCOUNT_NAME" \
                           "$STORAGE_CONTAINER_NAME" \
@@ -57,7 +59,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: Test Deploy VM using VHD
       run: |
-        create-test-vm.sh "$RESOURCE_GROUP" \
+        ./create-test-vm.sh "$RESOURCE_GROUP" \
                           "$TEST_VM_NAME" \
                           "$STORAGE_ACCOUNT_NAME" \
                           "$STORAGE_CONTAINER_NAME" \
