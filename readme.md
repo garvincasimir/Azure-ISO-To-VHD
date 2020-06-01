@@ -1,5 +1,7 @@
 **Building Azure Images From ISO**
 
+![Build Status](https://github.com/garvincasimir/Azure-ISO-To-VHD/workflows/CI/badge.svg)
+
 Have you ever had to manually install an operating system from scratch to create base images for use in the cloud? Are you required to periodically rebuild these base images because of patches and updates? Are you working on a packer plugin? This repository introduces an end to end workflow for creating base images from OS install disks in ISO format. Before jumping into this, please check out the [Azure Image Builder](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/image-builder). It may be a better fit if you have a Redhat subscription or you intend to extend existing Azure Base images. It handles a lot of the complexity involved in the process I am about to describe in this document.
 
 **How will this work?**
@@ -33,22 +35,24 @@ The *packer-build.sh* script will be used to build the image. It will be run fro
 
 The workflow consists of 2 jobs. The following are the steps contained in the first job.
 * The *Deploy Builder VM* step is responsible for creating the packer builder vm. 
-* The *Packer build VHD* step contains is responsible for running packer. 
+* The *Packer build VHD* step is responsible for running packer. 
 * The *VHD Upload* step uploads the finished VHD to Azure storage. 
 
-The second job is optional. It simply attempts to create a vm using the newly created VHD. Use it for validation. Please view the [Github Actions workflow file](.github/workflows/build-vhd.yaml) for more details.
+The second job is optional. It simply attempts to create a vm using the newly created VHD. Please view the [Github Actions workflow file](.github/workflows/build-vhd.yaml) for more details.
 
-Please complete the following  steps:
-* [create the storage account](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-portal) that will be used to upload the finished base images. Create this resource in a separate resource group.
+Please complete the following steps:
+* [Create the storage account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) that will be used to upload the finished base images. Create this resource in a separate resource group.
+
+* [Create the storage container](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-portal#create-a-container) this workflow will use to upload each completed VHD
 
 * Navigate to *Settings -> Secrets* in your Github repository and create the following secrets:
   * *AZURE_CREDENTIALS* will be used by the Azure CLI to run all necessary commands in your Azure account. Please see the [official documentation](https://github.com/marketplace/actions/azure-cli-action) for details on creating these credentials. When creating the service principal, please set *scopes* to the entire subscription and not a specific resource group. This is because the workflow creates its own resource group.
 
   * *STORAGE_ACCOUNT_NAME* is the name of the storage account the workflow will use to store the VHD.
 
-  * *VM_PASSWORD* will be used as the password for all VMs created in this workflow
+  * *VM_PASSWORD* will be used as the password for all VMs created in this workflow.
 
-  * *VM_USERNAME* will be used as the username for all VMs created in this workflow
+  * *VM_USERNAME* will be used as the username for all VMs created in this workflow.
 
   * *SUBSCRIPTION_ID* is not used directly in the workflow but having it saved as a secret will cause it to be redacted in the logs. 
 
@@ -57,7 +61,7 @@ Please complete the following  steps:
 * Update all environment variables to values that suit your needs. Please pay close attention to the following: 
   * The resource group name you select should not already exist. __**The script will delete the resource group if it exists**__. 
   * After the image is uploaded to storage, the resource group and all the resources in it are no longer needed. Deleting the resource group will delete the group and all resources in it. Please do not deploy any other resources to this group. Select a name that can be dedicated to this workflow. 
-  * The Azure service principal used in the CLI tasks should have permissions to delete/create resource groups, managed images, storage SAS tokens and virtual machines.
+  * The Azure service principal used by the Azure CLI steps should have permissions to delete/create resource groups, managed images, storage SAS tokens and virtual machines.
 
 * Run your workflow
 
