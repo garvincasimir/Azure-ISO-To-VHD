@@ -25,7 +25,7 @@ SAS_TOKEN=$(az storage blob generate-sas \
     --name $IMAGE_NAME \
     --auth-mode key \
     --account-key $KEY \
-    --permissions cwd \
+    --permissions cw \
     --expiry $expiration \
     -o tsv)
 
@@ -42,5 +42,5 @@ az vm run-command invoke \
 -g $RESOURCE_GROUP \
 -n $VM_NAME \
 --command-id RunShellScript \
---scripts "/root/upload-vhd.sh $IMAGE_URL '$SAS_TOKEN'" 
+--scripts "/root/upload-vhd.sh $IMAGE_URL '?$SAS_TOKEN'" 
 
