@@ -3,8 +3,8 @@
     [
       {
         "type": "qemu",
-        "iso_url": "https://repo.almalinux.org/almalinux/8.3-beta/isos/x86_64/AlmaLinux-8.3-beta-1-x86_64-minimal.iso",
-        "iso_checksum": "d72c5be79b8d1dabdabbdf3fcb58813cc3a77659d8519646ba5fe78097f0ceaf",
+        "iso_url": "http://mirror.cs.vt.edu/pub/CentOS/7.8.2003/isos/x86_64/CentOS-7-x86_64-Minimal-2003.iso",
+        "iso_checksum": "659691c28a0e672558b003d223f83938f254b39875ee7559d1a4a14c79173193",
         "iso_checksum_type": "sha256",
         "output_directory": "disk",
         "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
