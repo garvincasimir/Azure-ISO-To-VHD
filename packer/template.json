@@ -23,7 +23,7 @@
         "disk_interface": "virtio",
         "boot_wait": "30s",
         "boot_command": [
-          "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos7.6-ks.cfg<enter><wait>"
+          "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/almalinux-8.3-ks.cfg<enter><wait>"
         ]
       }
     ],
