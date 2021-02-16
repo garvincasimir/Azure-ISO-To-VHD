@@ -3,8 +3,8 @@
     [
       {
         "type": "qemu",
-        "iso_url": "http://mirror.cs.vt.edu/pub/CentOS/7.8.2003/isos/x86_64/CentOS-7-x86_64-Minimal-2003.iso",
-        "iso_checksum": "659691c28a0e672558b003d223f83938f254b39875ee7559d1a4a14c79173193",
+        "iso_url": "http://mirror.vcu.edu/pub/gnu_linux/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso",
+        "iso_checksum": "07b94e6b1a0b0260b94c83d6bb76b26bf7a310dc78d7a9c7432809fb9bc6194a",
         "iso_checksum_type": "sha256",
         "output_directory": "disk",
         "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
