@@ -35,4 +35,6 @@ yum install -y python-pyasn1 WALinuxAgent
 
 systemctl enable waagent
 
-reboot
+dracut -f -v
+sudo waagent -force -deprovision
+export HISTSIZE=0
