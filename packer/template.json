@@ -33,12 +33,6 @@
         "script": "/root/bake-azure.sh",
         "type": "shell",
         "expect_disconnect": true
-      },
-      {
-        "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
-        "script": "/root/deprovision.sh",
-        "type": "shell",
-        "pause_before": "10s"
       }
     ]
-  }
+}
