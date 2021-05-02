@@ -26,9 +26,9 @@ write_files:
     content: _(packer/template.json)
   - encoding: b64
     owner: root:root
-    path: /root/config/centos7.6-ks.cfg
+    path: /root/config/rocky-8.3-ks.cfg
     permissions: '0644'
-    content: _(packer/centos7.6-ks.cfg) 
+    content: _(packer/rocky.8.3-ks.cfg) 
   - encoding: b64
     owner: root:root
     path: /root/install-azcopy.sh
